@@ -1,4 +1,4 @@
-# Code Review
+﻿# Code Review
 
 ## Defects Found in the Starter
 
@@ -17,12 +17,12 @@
 
 ## Known Issues Requiring Further Work
 
-- Fixed regularization history comparison by normalizing punch timestamps to UTC at second precision. Manually verified that unchanged punch-in values are omitted from new history entries. Automated regression testing is still needed.
+- Fixed regularization history comparison by normalizing punch timestamps to UTC at second precision. Manually verified that unchanged punch-in values are omitted from new history entries. Calculation regression tests are included; automated integration tests for regularization history are still needed.
 - Monthly and department-summary present-day calculations need to exclude weekend records while still counting weekend lateness and overtime where required.
 - Punch-out searches only the ten most recent candidate records, which can miss a valid earlier record in edge cases.
 - Department trend fills calendar gaps in Python rather than performing all required aggregation in MongoDB.
 - The explain endpoint needs verification to ensure its query plan reflects the actual filters and pagination of each corresponding endpoint.
-- - Added 8 automated calculation tests; `python -m pytest -v` reports 8 passed. Automated endpoint integration tests and further edge-case checks are still needed.
+- Added 8 automated calculation tests; `python -m pytest -v` reports 8 passed. Automated endpoint integration tests and further edge-case checks are still needed.
 
 ## Items Reviewed That Are Not Defects
 
@@ -30,3 +30,4 @@
 - Returning HTTP 200 for successful punch-out, attendance retrieval, and regularization is intentional.
 - An attendance record with a short completed work duration can correctly have `half_day: true`.
 - MongoDB's unique indexes are necessary for duplicate protection under concurrent requests; a preliminary application-level lookup alone is insufficient.
+
