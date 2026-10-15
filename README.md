@@ -1,6 +1,6 @@
 # Employee Attendance & Analytics API
 
-A FastAPI application backed by MongoDB for employee management, attendance punch-in and punch-out, attendance regularization, and attendance analytics.
+A FastAPI application backed by MongoDB for employee management, attendance punch-in and punch-out, attendance regularization, and workforce analytics.
 
 ## Features
 
@@ -16,11 +16,13 @@ A FastAPI application backed by MongoDB for employee management, attendance punc
 
 - Python 3.13 recommended.
 - MongoDB 6.0 or newer.
-- A MongoDB Atlas cluster or an accessible local MongoDB instance.
+- MongoDB Atlas or an accessible local MongoDB instance.
 
 ## Setup on Windows PowerShell
 
 Open PowerShell in the project directory.
+
+Create a virtual environment and install dependencies:
 
 ```powershell
 py -3.13 -m venv .venv
@@ -28,14 +30,14 @@ py -3.13 -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-Create a file named `.env` in the project root with these settings:
+Create a `.env` file in the project root with your own database settings:
 
 ```dotenv
 MONGO_URI=your_mongodb_connection_string
 MONGO_DB=attendance_db
 ```
 
-Replace the example value with your own MongoDB connection string. Never commit `.env` or share database credentials.
+Replace the example URI with your actual MongoDB connection string. Never commit `.env` or share database credentials.
 
 ## Run the API
 
@@ -43,20 +45,22 @@ Replace the example value with your own MongoDB connection string. Never commit 
 uvicorn app.main:app --port 8000
 ```
 
-Open the interactive documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and check database readiness at [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health).
+Interactive API documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+Health check: [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
 
 ## Sample data
 
-`sample_data/` contains example employee and attendance documents. To load them, run:
+`sample_data/` contains example employee and attendance documents. To load the samples, run:
 
 ```powershell
 python sample_seed.py
 ```
 
-**Warning:** The seed script deletes the existing `employees` and `attendance_logs` documents in the configured database before loading the samples. Use a disposable test database, not a database containing records you need to keep.
+**Warning:** The seed script deletes existing documents from the `employees` and `attendance_logs` collections in the configured database before loading sample data. Use a disposable test database.
 
 ## Testing and limitations
 
-The API has been manually exercised through Swagger for employee creation, punch-in, punch-out, attendance listing, analytics, and regularization. Automated tests have not yet been added, and additional edge-case verification is still needed for overnight shifts, weekend analytics, and query-plan behavior.
+Employee creation, punch-in, punch-out, attendance listing, analytics, and regularization have been manually exercised through Swagger UI.
 
-See `REVIEW.md` for known issues and `DECISIONS.md` for implementation decisions. The sample data is not a substitute for testing the complete set of assignment rules against a larger dataset.
+Automated tests have not yet been added. Additional verification is needed for overnight shifts, weekend analytics, boundary conditions, and query-plan behavior. See `REVIEW.md` for known issues and `DECISIONS.md` for design decisions. Manual testing does not establish that all assignment requirements have been verified.
