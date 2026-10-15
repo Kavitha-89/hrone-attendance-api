@@ -341,10 +341,32 @@ def regularize(emp_code: str, attendance_day: str, body: RegularizeIn):
     overtime = compute_overtime(new_po, emp["shift_end"], attendance_day, emp["shift_start"]) if new_pi and new_po else 0
     hd = half_day(hours) if hours is not None else False
     proposed = {"status": new_status, "punch_in": pi_db, "punch_out": po_db, "late_minutes": late, "work_hours": hours, "overtime_minutes": overtime, "half_day": hd}
+    def same_value(key, previous, current):
+        if key not in ("punch_in", "punch_out"):
+            return previous == current
+
+        def utc_second(value):
+            if value is None:
+                return None
+
+            if value.tzinfo is None:
+                value = value.replace(tzinfo=UTC)
+
+            return value.astimezone(UTC).replace(microsecond=0)
+
+        return utc_second(previous) == utc_second(current)
+
     changes = {}
+
     for key, val in proposed.items():
-        previous = rec.get(key, False if key == "half_day" else 0 if key in ("late_minutes", "overtime_minutes") else None)
-        if previous != val:
+        previous = rec.get(
+            key,
+            False if key == "half_day"
+            else 0 if key in ("late_minutes", "overtime_minutes")
+            else None,
+        )
+
+        if not same_value(key, previous, val):
             changes[key] = {"from": previous, "to": val}
     if not changes: raise HTTPException(422, "regularization does not change the record")
     history_entry = {"at": datetime.now(UTC), "by": body.by, "reason": body.reason, "changes": changes}
