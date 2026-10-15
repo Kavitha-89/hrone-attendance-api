@@ -1,4 +1,4 @@
-@'
+
 # Employee Attendance & Analytics API
 
 A FastAPI application backed by MongoDB for employee management, attendance punch-in and punch-out, attendance regularization, and analytics.
