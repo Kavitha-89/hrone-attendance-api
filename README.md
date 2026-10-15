@@ -61,6 +61,6 @@ python sample_seed.py
 
 ## Testing and limitations
 
-Employee creation, punch-in, punch-out, attendance listing, analytics, and regularization have been manually exercised through Swagger UI.
+Eight automated calculation tests currently pass, covering late-arrival grace boundaries, overtime thresholds, overnight shifts, work-hour rounding, half-day status, and attendance-date assignment. Employee creation, punch-in, punch-out, attendance listing, analytics, and regularization have also been manually exercised through Swagger UI.
 
-Automated tests have not yet been added. Additional verification is needed for overnight shifts, weekend analytics, boundary conditions, and query-plan behavior. See `REVIEW.md` for known issues and `DECISIONS.md` for design decisions. Manual testing does not establish that all assignment requirements have been verified.
+Additional verification is still needed for weekend analytics, boundary conditions, concurrent requests, and query-plan behavior. See REVIEW.md for known issues and DECISIONS.md for design decisions. Passing these tests does not establish that every assignment requirement has been verified.
